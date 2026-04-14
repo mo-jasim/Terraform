@@ -68,7 +68,12 @@ resource "aws_instance" "my_instance" {
 
 # Instance State
 resource "aws_ec2_instance_state" "my_instance_state" {
-  for_each    = aws_instance.my_instance
   instance_id = aws_instance.my_instance.id
   state       = "stopped"
-}
+} 
+
+# resource "aws_ec2_instance_state" "my_instance_state" {
+#   for_each    = aws_instance.my_instance
+#   instance_id = aws_instance.my_instance.id
+#   state       = "stopped"
+# }
