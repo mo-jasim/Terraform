@@ -4,5 +4,6 @@ resource aws_s3_bucket my_bucket {
 
     tags = {
       Name = "${var.aws_s3_bucket_name}-${count.index + 1}"
+      Environment = var.env
     }
 }
