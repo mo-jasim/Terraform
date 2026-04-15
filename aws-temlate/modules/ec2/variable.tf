@@ -52,8 +52,8 @@ variable "ec2_instance_ami" {
   type = string
 }
 
-variable "env" {
-  description = "Workspace"
-  default = terraform.workspace
-  type = string
-}
+# variable "env" {
+#   description = "Workspace"
+#   default = terraform.workspace
+#   type = string
+# }
