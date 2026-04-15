@@ -1,12 +1,7 @@
-# AWS Region
-provider "aws" {
-  region = "ap-south-1"
-}
-
-# AWS SSH Key Pair
+# AWS SSH Key Pair With Template Variable
 resource "aws_key_pair" "my_key_pair" {
-  key_name   = "my-key-pair"
-  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILrsqpUaHSKd8a4xDXm6dBuVbr6SnshKpUkNGNvAiJMB mo-jasim@Mo-Jasim"
+  key_name   = "${var.ssh_key_name}-terraform-key"
+  public_key = file(var.public_key_path)
 }
 
 # VPS ID
@@ -14,7 +9,7 @@ resource "aws_default_vpc" "default" {}
 
 # Security Group 
 resource "aws_security_group" "my_security_group" {
-  name        = "my-security-group"
+  name        = var.ec2_security_group_name
   description = "Security group for default VPC"
   vpc_id      = aws_default_vpc.default.id
 }
@@ -22,7 +17,8 @@ resource "aws_security_group" "my_security_group" {
 # SSH Port
 resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   security_group_id = aws_security_group.my_security_group.id
-  cidr_ipv4         = aws_default_vpc.default.cidr_block
+  # cidr_ipv4         = aws_default_vpc.default.cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
   ip_protocol       = "tcp"
   to_port           = 22
@@ -46,34 +42,29 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 
 # EC2 Instance
 resource "aws_instance" "my_instance" {
-  # count = 2 # Create 2 instances
-  # instance_state = "stopped" # Stop the instance
-  ami           = "ami-05d2d839d4f73aafb"
-  instance_type = "t3.nano"
+  count         = var.ec2_instance_count
+  ami           = var.ec2_instance_ami
+  instance_type = var.ec2_instance_type
 
   key_name = aws_key_pair.my_key_pair.key_name
 
   vpc_security_group_ids = [aws_security_group.my_security_group.id]
 
-  # EBS Storage
   root_block_device {
-    volume_size = 10
+    volume_size = var.ec2_volume_size
     volume_type = "gp3"
   }
 
-  tags = {
-    Name = "terra-auto-server"
+  tags = { 
+    Name = var.ec2_instance_name
   }
 }
 
 # Instance State
 resource "aws_ec2_instance_state" "my_instance_state" {
-  instance_id = aws_instance.my_instance.id
-  state       = "stopped"
-} 
-
-# resource "aws_ec2_instance_state" "my_instance_state" {
-#   for_each    = aws_instance.my_instance
-#   instance_id = aws_instance.my_instance.id
-#   state       = "stopped"
-# }
+  count       = var.ec2_instance_count 
+  
+  instance_id = aws_instance.my_instance[count.index].id
+  
+  state       = var.ec2_running_state
+}
