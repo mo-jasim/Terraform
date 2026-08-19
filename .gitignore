@@ -3,3 +3,5 @@ terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
 .pub
+terraform_key
+terraform_key.pub

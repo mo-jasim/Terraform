@@ -25,63 +25,43 @@ variable "ec2_instance_count" {
 
 variable "ec2_security_group_name" {
   description = "Security Group Name"
-  default = "my-security-group"
+  default = "custom-vpc-security-group"
   type = string
 }
 
 variable "ec2_running_state" {
   description = "This is used for maintaining the ec2 instance state"
-  default = "stopped"
+  default = "running"
   type = string
 }
 
 variable "ssh_key_name" {
   description = "SSH Key Name"
-  default = "dev"
+  default = "custom-vpc-ssh"
   type = string
 }
 
 variable "public_key_path" {
   description = "Path to the SSH public key"
   type        = string
-  default     = "./terraform_key.pub"
+  default     = "../terraform_key.pub"
 }
 
 variable "ec2_instance_ami" {
   description = "AWS AMI Selections"
-  default = "ami-05d2d839d4f73aafb"
-  type = string
-}
-
-# Remote Backend
-variable "remote_bucket_name" {
-  description = ""
-  default = "mojasim-remote-s3-bucket"
-  type = string
-}
-
-variable "remote_dynamodb_table" {
-  description = ""
-  default = "remote-backend-db"
-  type = string
-}
-
-variable "remote_aws_region" {
-  description = ""
-  default = "ap-south-1"
+  default = "ami-01a00762f46d584a1"
   type = string
 }
 
 # VPC Variables
 variable "vpc_name" {
-  description = "Vpc name"
-  default = "custom_vpc"
+  default = "public_vpc"
   type = string
 }
 
-variable "internet_gateway_name" {
-  description = "internet_gateway_name"
-  default = "custom_igw"
+variable "vpc_cidr_block" {
+  description = ""
+  default = "195.0.0.0/24"
   type = string
 }
 
@@ -91,26 +71,25 @@ variable "subnet_name" {
   type = string
 }
 
+variable "subnet_cidr_block" {
+  description = ""
+  default = "195.0.0.0/25"
+  type = string
+}
+
 variable "route_table_name" {
   description = "route_table_name"
   default = "public-route-table"
   type = string
 }
 
-variable "vpc_cidr_block" {
-  description = ""
-  default = "192.0.0.0/16"
+variable "internet_gateway_name" {
+  description = "internet_gateway_name"
+  default = "public_igw"
   type = string
 }
 
-variable "subnet_cidr_block" {
-  description = ""
-  default = "192.0.1.0/24"
-  type = string
-}
-
-variable "route_table_cidr_block" {
-  description = ""
+variable "route_to_internet_gateway" {
   default = "0.0.0.0/0"
   type = string
 }

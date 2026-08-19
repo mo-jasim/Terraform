@@ -9,15 +9,6 @@ resource "aws_vpc" "custom_vpc" {
   }
 }
 
-# Internet Gateway
-resource "aws_internet_gateway" "custom_igw" {
-  vpc_id = aws_vpc.custom_vpc.id
-
-  tags = {
-      Name = var.internet_gateway_name
-  }
-}
-
 # Public Subnet
 resource "aws_subnet" "public_subnet" {
   vpc_id     = aws_vpc.custom_vpc.id
@@ -30,12 +21,21 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-# Route Table
+# Internet Gateway
+resource "aws_internet_gateway" "custom_igw" {
+  vpc_id = aws_vpc.custom_vpc.id
+
+  tags = {
+      Name = var.internet_gateway_name
+  }
+}
+
+# Route To internet gateway
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.custom_vpc.id
 
   route {
-      cidr_block = var.route_table_cidr_block
+      cidr_block = var.route_to_internet_gateway
       gateway_id = aws_internet_gateway.custom_igw.id
   }
 

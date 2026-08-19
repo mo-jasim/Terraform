@@ -48,7 +48,7 @@ variable "public_key_path" {
 
 variable "ec2_instance_ami" {
   description = "AWS AMI Selections"
-  default = "ami-05d2d839d4f73aafb"
+  default = "ami-01a00762f46d584a1"
   type = string
 }
 
