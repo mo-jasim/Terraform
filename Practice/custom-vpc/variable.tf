@@ -93,3 +93,13 @@ variable "route_to_internet_gateway" {
   default = "0.0.0.0/0"
   type = string
 }
+
+variable "availability_zone" {
+  default = "ap-south-1a"
+  type = string
+}
+
+variable "ec2_volume_type" {
+  default = "gp3"
+  type = string
+}

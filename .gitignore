@@ -5,3 +5,5 @@ terraform.tfstate.backup
 .pub
 terraform_key
 terraform_key.pub
+.vscode/
+.DS_Store
