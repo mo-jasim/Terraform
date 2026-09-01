@@ -1,4 +1,5 @@
 {
-    "editor.codeLensFontFamily": "Montserrat-Black",
-    "editor.fontFamily": "Montserrat-SemiBold"
+  "editor.codeLensFontFamily": "Montserrat-Black",
+  "editor.fontFamily": "Montserrat-SemiBold",
+  "editor.fontSize": 16
 }
